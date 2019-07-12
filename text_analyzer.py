@@ -4,8 +4,9 @@ from text_processor import process_all_commands
 
 if len(sys.argv) == 3:
   print 'Processing!'
-  input_data = sys.argv[1];
-  list_of_commands = sys.argv[2];
+  input_data = sys.argv[1]
+  list_of_commands = sys.argv[2]
+  #TODO: handle file output
   results = process_all_commands(input_data, list_of_commands)
   print results
 else:
