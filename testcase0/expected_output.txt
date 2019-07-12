@@ -1,0 +1,13 @@
+6
+6 6 6
+2 0 1 1
+1 1 0
+0
+0 1
+the for Rewards you
+the
+TRUE
+TRUE
+FALSE
+TRUE
+FALSE
