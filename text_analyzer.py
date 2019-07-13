@@ -1,5 +1,5 @@
 import sys
-from text_processor import process_all_commands
+from text_processor import QueryText
 # python example_solution.py input_data.txt list_of_commands.txt output.txt
 
 if len(sys.argv) == 3:
@@ -7,7 +7,7 @@ if len(sys.argv) == 3:
   input_data = sys.argv[1]
   list_of_commands = sys.argv[2]
   #TODO: handle file output
-  results = process_all_commands(input_data, list_of_commands, './output.txt')
-  print results
+  qt = QueryText(input_data, './output.txt')
+  qt.process_all_commands(list_of_commands)
 else:
   print 'Expecting 2 arguments'
