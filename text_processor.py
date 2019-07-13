@@ -1,3 +1,4 @@
+import operator
 def process_frequency_command(input_data, args):
   '''
   1. Reads the text from the input data.
@@ -9,12 +10,16 @@ def process_frequency_command(input_data, args):
     1. Fills a request map for each word to track frequency on.
     '''
     freq_req_map = {}
+    pos = 0
     for arg in args:
       if arg in freq_req_map: 
-        freq_req_map[arg] += 1
+        freq_req_map[arg].append(pos)
+        pos += 1
       else:
-        freq_req_map[arg] = 1
+        freq_req_map[arg] = [pos]
+        pos += 1
     return freq_req_map
+  count_requests = len(args)
   freq_req_map = fill_freq_request_map(args)
 
   def read_text(input_data):
@@ -31,18 +36,12 @@ def process_frequency_command(input_data, args):
     1. 
     '''
     freq_map = {}
-    pos = 0
     for word in text:
       if word in freq_req_map:
         if word in freq_map:
-          freq_map[word]['cnt'] += 1
+          freq_map[word] += 1
         else:
-          freq = {
-            'pos': pos,
-            'cnt': 1
-          }
-          freq_map[word] = freq
-          pos += 1
+          freq_map[word] = 1
     return freq_map
 
   print 'Start frequency command'
@@ -53,13 +52,22 @@ def process_frequency_command(input_data, args):
   for word in freq_req_map:
     if not word in freq_map:
       print word
-      # freq_map[word] = {
-      #   ''
-      # }
+      freq_map[word] = 0
       
-  print text
-  print freq_req_map
-  print freq_map
+  # print text
+  # print "freq_req_map", freq_req_map
+  # print len(freq_req_map)
+  # print "freq_map", freq_map
+
+  to_print = ''
+  freqs = [None]*count_requests
+  for req in sorted(freq_req_map.items(), key=operator.itemgetter(1)):
+    freq = freq_map[req[0]]
+    positions = req[1]
+    for pos in positions:
+      # print "update pos", pos
+      freqs[pos] = str(freq)
+  print ' '.join(freqs)
 def process_top_command(input_data, args):
   print 'Start top command'
 def process_inorder_command(input_data, args):

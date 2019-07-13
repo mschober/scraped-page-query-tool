@@ -1,3 +1,6 @@
 FREQUENCY points
 FREQUENCY points points points
 FREQUENCY The amex business Business
+FREQUENCY $150,000 Qantas), Qantas
+FREQUENCY BrandVerity
+FREQUENCY cat earn
