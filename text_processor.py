@@ -1,7 +1,11 @@
 import operator
 
-class QueryText:
-
+class QuerySmallTextFile:
+  '''
+  By wrapping the output file handle methods can write results and not worry about file I/O.
+  By reading all the text into memory, subsequent queries don't have to read the original text file.
+  NOTE: If the input file got large, this in memory solution wouldn't be sufficient.
+  '''
   def __init__(self, input_data_filepath, output_data_filepath):
     self.output_file = open(output_data_filepath, 'w')
     self.text = self.read_file(input_data_filepath)
@@ -64,34 +68,39 @@ class QueryText:
           freq_req_map[arg] = [pos]
           pos += 1
       return freq_req_map
-    count_requests = len(args)
-    freq_req_map = fill_freq_request_map(args)
  
     def count_word_freq(text, freq_req_map):
       '''
       1. Loops over all the words in text checking the frequency request map.
       2. If the word is in the request map, then frequency map item is added. 
          If the word was already there the frequence is increased.
+      3. If the request wasn't found, a 0 is added to the freq_map.
       '''
-      freq_map = {}
-      for word in text:
-        if word in freq_req_map:
-          if word in freq_map:
-            freq_map[word] += 1
-          else:
-            freq_map[word] = 1
+      def loop_and_count(freq_req_map):
+        freq_map = {}
+        for word in text:
+          if word in freq_req_map:
+            if word in freq_map:
+              freq_map[word] += 1
+            else:
+              freq_map[word] = 1
+        return freq_map
+      def add_not_found_entries(freq_map, freq_req_map):
+        for word in freq_req_map:
+          if not word in freq_map:
+            print word
+            freq_map[word] = 0
+        return freq_map
+      freq_map = loop_and_count(freq_req_map)
+      freq_map = add_not_found_entries(freq_map, freq_req_map)
       return freq_map
 
     print 'Start frequency command'
     text = self.text
     print 'DEBUG:', text
+    count_requests = len(args)
+    freq_req_map = fill_freq_request_map(args)
     freq_map = count_word_freq(text, freq_req_map)
-
-    #TODO: need to figure out how to increment pos if a request word isn't found anywhere in the text
-    for word in freq_req_map:
-      if not word in freq_map:
-        print word
-        freq_map[word] = 0
         
         
     # print text
