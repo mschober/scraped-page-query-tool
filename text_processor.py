@@ -1,5 +1,6 @@
 import operator
-def process_frequency_command(input_data, args):
+
+def process_frequency_command(input_data, args, output_file):
   '''
   1. Reads the text from the input data.
   2. Loops over each word in text
@@ -67,7 +68,9 @@ def process_frequency_command(input_data, args):
     for pos in positions:
       # print "update pos", pos
       freqs[pos] = str(freq)
-  print ' '.join(freqs)
+  freq_responses = ' '.join(freqs)
+  print freq_responses
+  output_file.write(freq_responses + "\n")
 def process_top_command(input_data, args):
   print 'Start top command'
 def process_inorder_command(input_data, args):
@@ -75,26 +78,29 @@ def process_inorder_command(input_data, args):
 
 
 
-def process_all_commands(input_data, list_of_commands):
+def process_all_commands(input_data, list_of_commands, output_filepath):
   '''
   1. Loops over all the commands and splits them into a command type and a list of arguments.
   2. Maps command types to methods to run the command on the input data.
   3. Aggregates the results from all commands and returns the results.
   '''
-  results = []
-  for command in open(list_of_commands):
-    split_command = command.rstrip().split(' ')
-    command_type = split_command[0]
-    args = split_command[1:]
-    print command_type, args
-    if command_type == 'FREQUENCY':
-      result = process_frequency_command(input_data, args)
-    elif command_type == 'TOP':
-      result = process_top_command(input_data, args)
-    elif command_type == 'IN_ORDER':
-      result = process_inorder_command(input_data, args)
-    else:
-      raise Exception('Error: unknown command type {}'.format(command_type))
-    results.append(result)
+  #TODO: wrap file handle in a class for handling
+  output_file = open(output_filepath, 'w')
+  try:
+    for command in open(list_of_commands):
+      split_command = command.rstrip().split(' ')
+      command_type = split_command[0]
+      args = split_command[1:]
+      print command_type, args
+      if command_type == 'FREQUENCY':
+        process_frequency_command(input_data, args, output_file)
+      elif command_type == 'TOP':
+        process_top_command(input_data, args, output_file)
+      elif command_type == 'IN_ORDER':
+        process_inorder_command(input_data, args, output_file)
+      else:
+        raise Exception('Error: unknown command type {}'.format(command_type))
+  except:
+    output_file.close()
+  output_file.close()
   print 'Done!'
-  return results

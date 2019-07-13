@@ -7,7 +7,7 @@ if len(sys.argv) == 3:
   input_data = sys.argv[1]
   list_of_commands = sys.argv[2]
   #TODO: handle file output
-  results = process_all_commands(input_data, list_of_commands)
+  results = process_all_commands(input_data, list_of_commands, './output.txt')
   print results
 else:
   print 'Expecting 2 arguments'
